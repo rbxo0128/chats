@@ -1,0 +1,73 @@
+server:
+  port: 8080 # 충돌 문제 시 수정
+spring:
+  security:
+    user:
+      name: user
+      password: 1234
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: ${GOOGLE_CLIENT_ID}
+            client-secret: ${GOOGLE_CLIENT_SECRET}
+            scope:
+              - email
+              - profile
+          github:
+            client-id: ${GITHUB_CLIENT_ID}
+            client-secret: ${GITHUB_CLIENT_SECRET}
+            scope:
+              - user:email
+              - read:user
+
+          kakao:
+            client-id: ${KAKAO_CLIENT_ID}
+            client-secret: ${KAKAO_CLIENT_SECRET}
+            redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
+            client-authentication-method: client_secret_post
+            authorization-grant-type: authorization_code
+            scope:
+              #              - account_email
+              - profile_nickname
+        provider:
+          kakao:
+            authorization-uri: https://kauth.kakao.com/oauth/authorize
+            token-uri: https://kauth.kakao.com/oauth/token
+            user-info-uri: https://kapi.kakao.com/v2/user/me
+            user-name-attribute: id
+  jpa:
+    hibernate:
+      # ddl-auto: create # 배포 시는 none 또는 validate 추천
+      ddl-auto: create
+    properties:
+      hibernate:
+        # dialect: org.hibernate.dialect.MySQL8Dialect
+        dialect: org.hibernate.dialect.MySQL8Dialect
+        show_sql: true
+        format_sql: true
+
+  datasource:
+    # driver-class-name: com.mysql.cj.jdbc.Driver # MySQL
+    driver-class-name: com.mysql.cj.jdbc.Driver # MySQL
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+# 객체 스토리지
+supabase:
+  url: ${SUPABASE_URL}
+  access-key: ${SUPABASE_ACCESS_KEY}
+  pdf-bucket-name: ${SUPABASE_PDF_BUCKET_NAME}
+  sheet-bucket-name: ${SUPABASE_SHEET_BUCKET_NAME}
+  img-bucket-name: ${SUPABASE_IMG_BUCKET_NAME}
+# Swagger
+springdoc:
+  swagger-ui:
+    enabled: true # 배포 환경에선
+  api-docs:
+    enabled: true # 배포 환경에선
+
+# JWT
+jwt:
+  secret: ${JWT_SECRET}
+  expiration-ms: ${JWT_EXPIRATION_MS}
