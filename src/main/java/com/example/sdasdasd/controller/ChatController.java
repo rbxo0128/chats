@@ -29,31 +29,29 @@ public class ChatController {
     }
 
     @GetMapping("/rooms/user/{userId}")
-    public ResponseEntity<List<ChatroomResponse>> getUserChatrooms(@PathVariable Long userId) {
+    public ResponseEntity<List<ChatroomResponse>> getUserChatrooms(@PathVariable String userId) {
         // In a real application, you would get the user from a user service or repository
         PetUser user = new PetUser();
         user.setUserId(userId);
-        
+
         List<Chatroom> chatrooms = chatService.getUserChatrooms(user);
         List<ChatroomResponse> response = chatrooms.stream()
                 .map(ChatroomResponse::new)
                 .collect(Collectors.toList());
-        
+
         return ResponseEntity.ok(response);
     }
 
     // Get all chatrooms for a trainer
     @GetMapping("/rooms/trainer/{trainerId}")
     public ResponseEntity<List<ChatroomResponse>> getTrainerChatrooms(@PathVariable Long trainerId) {
-        // In a real application, you would get the trainer from a user service or repository
         PetUser trainer = new PetUser();
-        trainer.setUserId(trainerId);
-        
+
         List<Chatroom> chatrooms = chatService.getTrainerChatrooms(trainer);
         List<ChatroomResponse> response = chatrooms.stream()
                 .map(ChatroomResponse::new)
                 .collect(Collectors.toList());
-        
+
         return ResponseEntity.ok(response);
     }
 
@@ -62,14 +60,13 @@ public class ChatController {
     public ResponseEntity<ChatroomResponse> createChatroom(@RequestBody CreateChatroomRequest request) {
         // In a real application, you would get the users from a user service or repository
         PetUser user = new PetUser();
-        user.setUserId(request.getUserId());
-        
+
         PetUser trainer = new PetUser();
-        trainer.setUserId(request.getTrainerId());
-        
+
+
         Chatroom chatroom = chatService.createChatroom(user, trainer);
         ChatroomResponse response = new ChatroomResponse(chatroom);
-        
+
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
@@ -77,7 +74,7 @@ public class ChatController {
     @GetMapping("/rooms/{chatroomId}")
     public ResponseEntity<ChatroomResponse> getChatroom(@PathVariable Long chatroomId) {
         Optional<Chatroom> chatroom = chatService.getChatroom(chatroomId);
-        
+
         return chatroom.map(c -> ResponseEntity.ok(new ChatroomResponse(c)))
                 .orElse(ResponseEntity.notFound().build());
     }
@@ -86,16 +83,16 @@ public class ChatController {
     @GetMapping("/rooms/{chatroomId}/messages")
     public ResponseEntity<List<ChatResponse>> getChatMessages(@PathVariable Long chatroomId) {
         Optional<Chatroom> chatroom = chatService.getChatroom(chatroomId);
-        
+
         if (chatroom.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
-        
+
         List<Chat> messages = chatService.getChatMessages(chatroom.get());
         List<ChatResponse> response = messages.stream()
                 .map(ChatResponse::new)
                 .collect(Collectors.toList());
-        
+
         return ResponseEntity.ok(response);
     }
 
@@ -104,16 +101,16 @@ public class ChatController {
     public ResponseEntity<ChatResponse> sendMessage(
             @PathVariable Long chatroomId,
             @RequestBody SendMessageRequest request) {
-        
+
         Optional<Chatroom> chatroom = chatService.getChatroom(chatroomId);
-        
+
         if (chatroom.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
-        
+
         Chat chat = chatService.sendMessage(chatroom.get(), request.getContent());
         ChatResponse response = new ChatResponse(chat);
-        
+
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 }

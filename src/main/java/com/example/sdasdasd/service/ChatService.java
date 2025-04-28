@@ -47,7 +47,6 @@ public class ChatService {
         Chatroom chatroom = new Chatroom();
         chatroom.setUser(user);
         chatroom.setTrainer(trainer);
-        chatroom.setCreatedAt(LocalDateTime.now());
         chatroom.setUpdatedAt(LocalDateTime.now());
         
         return chatroomRepository.save(chatroom);

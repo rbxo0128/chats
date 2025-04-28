@@ -1,9 +1,12 @@
 package com.example.sdasdasd.model.dto;
 
 import jakarta.persistence.*;
+import lombok.Data;
+import org.springframework.data.annotation.CreatedDate;
 
 import java.time.LocalDateTime;
 
+@Data
 @Entity
 @Table(name = "chats")
 public class Chat {
@@ -14,41 +17,10 @@ public class Chat {
     @ManyToOne
     @JoinColumn(name = "chatroom_id")
     private Chatroom chatroom;
-
+    private String sender;
+    private String receiver;
     private String content;
 
+    @CreatedDate
     private LocalDateTime createdAt;
-
-    // Getters and Setters
-    public Long getChatId() {
-        return chatId;
-    }
-
-    public void setChatId(Long chatId) {
-        this.chatId = chatId;
-    }
-
-    public Chatroom getChatroom() {
-        return chatroom;
-    }
-
-    public void setChatroom(Chatroom chatroom) {
-        this.chatroom = chatroom;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
 }

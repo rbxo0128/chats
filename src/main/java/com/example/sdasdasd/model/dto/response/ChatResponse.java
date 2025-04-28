@@ -1,9 +1,11 @@
 package com.example.sdasdasd.model.dto.response;
 
 import com.example.sdasdasd.model.dto.Chat;
+import lombok.Data;
 
 import java.time.LocalDateTime;
 
+@Data
 public class ChatResponse {
     private Long chatId;
     private Long chatroomId;
@@ -17,37 +19,5 @@ public class ChatResponse {
         this.content = chat.getContent();
         this.createdAt = chat.getCreatedAt();
     }
-
-    // Getters and Setters
-    public Long getChatId() {
-        return chatId;
-    }
-
-    public void setChatId(Long chatId) {
-        this.chatId = chatId;
-    }
-
-    public Long getChatroomId() {
-        return chatroomId;
-    }
-
-    public void setChatroomId(Long chatroomId) {
-        this.chatroomId = chatroomId;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
+    
 }
